@@ -20,16 +20,21 @@
       const { render } = ReactDOM;
       const { HashRouter, Route, Link } = ReactRouterDOM;
       const root = document.querySelector('#root');
-      const Nav = () => {
+
+      const Nav = (props) => {
+        const companies = props.companies;
+        const products = props.products;
+        console.log(props);
+        const path = props.path;
         return (
           <div className='nav'>
             <Link to='/'>ACME OFFERINGS * REACT</Link>
-            <Link to='/companies'>Companies</Link>
-            <Link to='/products'>Products</Link>
+            <Link to='/companies'>Companies ({companies.length})</Link>
+            <Link to='/products'>Products ({products.length})</Link>
           </div>
         );
       }
-      
+
       const Companies = ({companies}) => {
         return (
           <ul>
@@ -37,15 +42,15 @@
           </ul>
         );
       }
-      
+
       const Products = ({products}) => {
         return (
           <ul>
             {products.map(product => <li key={product.id}>{product.name}</li>)}
-          </ul>          
+          </ul>
         );
       }
-      
+
       class App extends Component {
         constructor(){
           super();
@@ -71,7 +76,7 @@
           return (
             <HashRouter>
               <div>
-                <Nav/>
+                <Route render= {({location})=><Nav path={location.pathname} products = {products} companies = {companies} />} />
               </div>
               <Route path='/companies' render = {() => <Companies companies = {companies}/> } />
               <Route path='/products' render = {() => <Products products = {products}/> } />
