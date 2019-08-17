@@ -15,6 +15,25 @@
       const root = document.querySelector('#root');
 
       class App extends Component {
+        constructor(){
+          super();
+          this.state = {
+            companies: [],
+            products: [],
+            offerings: []
+          }
+        }
+        async componentDidMount(){
+          const urls = [
+          'https://acme-users-api-rev.herokuapp.com/api/products',
+          'https://acme-users-api-rev.herokuapp.com/api/companies',
+          'https://acme-users-api-rev.herokuapp.com/api/offerings'
+          ];
+          const responses = await Promise.all(urls.map(url => axios.get(url)));
+          const [products, companies, offerings ] = responses.map(response => response.data);
+
+          this.setState({companies, products, offerings});
+        }
         render(){
           return (
             <hr/>
