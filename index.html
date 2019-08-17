@@ -35,11 +35,25 @@
         );
       }
 
-      const Companies = ({companies}) => {
+      const Companies = ({companies, offerings, products}) => {
         return (
-          <ul>
-            {companies.map(company => <li key={company.id}>{company.name}</li>)}
-          </ul>
+          <div>
+            {
+            companies.map(company =>
+            <li key={company.id}>
+              {company.name}
+                <div>
+                {company.catchPhrase}
+                </div>
+                <div>
+                Offering:
+                  {
+                    products.filter(product => offerings.find(offering=> offering.productId === product.id))
+                  }
+                </div>
+            </li>)
+            }
+         </div>
         );
       }
 
@@ -78,7 +92,7 @@
               <div>
                 <Route render= {({location})=><Nav path={location.pathname} products = {products} companies = {companies} />} />
               </div>
-              <Route path='/companies' render = {() => <Companies companies = {companies}/> } />
+              <Route path='/companies' render = {() => <Companies companies = {companies} offerings = {offerings}/> } />
               <Route path='/products' render = {() => <Products products = {products}/> } />
             </HashRouter>
           );
