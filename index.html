@@ -5,7 +5,14 @@
       <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
       <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js'></script>
       <script src='https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.0.1/react-router-dom.js'></script>
-  </head>
+      <style>
+        .nav {
+          display: flex;
+          justify-content: space-around;
+          background-color: tomato;
+        }
+      </style>
+    </head>
   <body>
     <div id='root'></div>
     <script type='text/babel'>
@@ -13,7 +20,32 @@
       const { render } = ReactDOM;
       const { HashRouter, Route, Link } = ReactRouterDOM;
       const root = document.querySelector('#root');
-
+      const Nav = () => {
+        return (
+          <div className='nav'>
+            <Link to='/'>ACME OFFERINGS * REACT</Link>
+            <Link to='/companies'>Companies</Link>
+            <Link to='/products'>Products</Link>
+          </div>
+        );
+      }
+      
+      const Companies = ({companies}) => {
+        return (
+          <ul>
+            {companies.map(company => <li key={company.id}>{company.name}</li>)}
+          </ul>
+        );
+      }
+      
+      const Products = ({products}) => {
+        return (
+          <ul>
+            {products.map(product => <li key={product.id}>{product.name}</li>)}
+          </ul>          
+        );
+      }
+      
       class App extends Component {
         constructor(){
           super();
@@ -35,8 +67,15 @@
           this.setState({companies, products, offerings});
         }
         render(){
+          const {companies, products, offerings} = this.state;
           return (
-            <hr/>
+            <HashRouter>
+              <div>
+                <Nav/>
+              </div>
+              <Route path='/companies' render = {() => <Companies companies = {companies}/> } />
+              <Route path='/products' render = {() => <Products products = {products}/> } />
+            </HashRouter>
           );
         }
       }
